@@ -25,4 +25,4 @@ mix release
 
 echo "Starting app..."
 
-_build/prod/rel/tasks1/bin/tasks1 foreground
+_build/prod/rel/tasks2/bin/tasks2 foreground

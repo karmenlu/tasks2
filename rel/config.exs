@@ -46,8 +46,8 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :tasks1 do
-  set version: current_version(:tasks1)
+release :tasks2 do
+  set version: current_version(:tasks2)
   set applications: [
     :runtime_tools
   ]
