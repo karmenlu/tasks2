@@ -1,0 +1,46 @@
+<h1>Listing Tasks</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Completehuh</th>
+      <th>Timespent</th>
+      <th>Assigned To</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for task <- @tasks do %>
+    <tr>
+      <td><%= task.title %></td>
+      <td><%= task.description %></td>
+      <td><%= task.completeHuh %></td>
+      <td><%= task.timeSpent %></td>
+      <td>
+        <%= if task.doer_id do %>
+          <%= Tasks1.Users.get_user(task.doer_id).name %>
+        <% else %>
+          No one
+        <% end %>
+      </td>
+
+      <td>
+        <%= link "Show", to: Routes.task_path(@conn, :show, task) %>
+        <%= if @current_user do %>
+          <%= link "Edit", to: Routes.task_path(@conn, :edit, task) %>
+        <% else %>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span>
+  <%= if @current_user do %>
+    <%= link "New Task", to: Routes.task_path(@conn, :new) %>
+  <% else %>
+  <% end %>
+</span>
