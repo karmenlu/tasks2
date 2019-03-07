@@ -1,13 +1,42 @@
-<h1>Show User</h1>
+<%= if @user == @current_user do %>
+  <h1>My Profile</h1>
+<% else %>
+  <h1><%=@user.name%>'s Profile</h1>
+<% end %>
 
-<ul>
-
-  <li>
+<p>
     <strong>Name:</strong>
     <%= @user.name %>
-  </li>
+</p>
 
-</ul>
+<p>
+  <strong>My Manager:</strong>
+  <%= if @user.manager_id do %>
+    <%= Tasks2.Users.get_user(@user.manager_id).name %>
+  <% else %>
+    No one
+  <% end %>
+</p>
+
+<p>
+  <strong>My Underlings:</strong>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for u <- @user.underlings do %>
+        <tr>
+          <td><%= u.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</p>
+
+
 
 <span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>
 <span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>

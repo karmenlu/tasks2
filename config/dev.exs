@@ -69,7 +69,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Configure your database
 config :tasks2, Tasks2.Repo,
   username: "tasks2",
-  password: "TooQue7ah",
+  password: "cupnoodles1337",
   database: "tasks2_dev",
   hostname: "localhost",
   pool_size: 10

@@ -11,6 +11,12 @@
     <%= error_tag f, :name %>
   </div>
 
+  <div class="form-group">
+    <%= label f, :manager_id %>
+    <%= select f, :manager_id,
+      [ {"No one", 0} | Enum.map(Tasks2.Users.list_users(), &{&1.name, &1.id}) ] %>
+  </div>
+
   <div>
     <%= submit "Register", class: "btn btn-primary" %>
   </div>

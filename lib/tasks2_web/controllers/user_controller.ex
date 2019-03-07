@@ -28,7 +28,7 @@ defmodule Tasks2Web.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
+    user = Users.get_user(id)
     render(conn, "show.html", user: user)
   end
 

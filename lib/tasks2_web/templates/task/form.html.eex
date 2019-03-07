@@ -34,7 +34,9 @@
   <div class="form-group">
     <%= label f, :doer_id %>
     <%= select f, :doer_id,
-      [ {"No one", 0} | Enum.map(Tasks2.Users.list_users(), &{&1.name, &1.id}) ] %>
+        [ {"No one", 0} |
+            [ {"Me", @current_user.id} |
+                Enum.map(Tasks2.Users.list_underlings(@current_user.id), &{&1.name, &1.id}) ]] %>
   </div>
 
   <div>

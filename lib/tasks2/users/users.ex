@@ -22,6 +22,14 @@ defmodule Tasks2.Users do
   end
 
   @doc """
+  Returns the list of a user's underlings, given a user id
+  """
+  def list_underlings(id) do
+    Repo.all from u in User,
+      where: u.manager_id == ^id
+  end
+
+  @doc """
   Gets a single user.
 
   Raises `Ecto.NoResultsError` if the User does not exist.
@@ -40,7 +48,7 @@ defmodule Tasks2.Users do
   def get_user(id) do
     Repo.one from u in User,
       where: u.id == ^id,
-      preload: [:tasksAssigned]
+      preload: [:tasksAssigned, :manager, :underlings]
   end
 
   def get_user_by_name(name) do

@@ -11,15 +11,26 @@
     <div class="container">
       <nav class="navbar navbar-expand-sm navbar-light bg-white">
         <div class="col-4">
-          <a class="navbar-brand" href="#">Tasks Tracker</a>
+          <%= if @current_user do %>
+            <%= link("Tasks Tracker", to: Routes.user_path(@conn, :show, @current_user.id), class: "navbar-brand") %>
+          <% else %>
+            <a class="navbar-brand" href="/">Tasks Tracker</a>
+          <% end %>
         </div>
         <div class="col-4">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/">Home</a>
+              <%= if @current_user do %>
+                <%= link("Home", to: Routes.user_path(@conn, :show, @current_user.id), class: "nav-link") %>
+              <% else %>
+                <a class="nav-link" href="/">Home</a>
+              <% end %>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/tasks">Tasks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Users</a>
             </li>
           </ul>
         </div>
