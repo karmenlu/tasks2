@@ -9,7 +9,7 @@ defmodule Tasks2.Tasks.Task do
     field :timeSpent, :integer, default: 0
     field :title, :string
     belongs_to :doer, Tasks2.Users.User
-
+    has_many :timeblocks, Tasks2.Timeblocks.Timeblock
     timestamps()
   end
 

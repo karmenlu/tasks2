@@ -24,7 +24,8 @@ defmodule Tasks2Web.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Tasks2Web do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", Tasks2Web do
+    pipe_through :api
+    resources "/timeblocks", TimeblockController, except: [:new, :edit]
+  end
 end
