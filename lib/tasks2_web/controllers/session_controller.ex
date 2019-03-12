@@ -7,7 +7,7 @@ defmodule Tasks2Web.SessionController do
       conn
       |> put_session(:user_id, user.id)
       |> put_flash(:info, "Welcome back #{user.name}")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> redirect(to: Routes.user_path(conn, :show, user))
     else
       conn
       |> put_flash(:error, "Login failed.")

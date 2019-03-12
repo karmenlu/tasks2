@@ -36,4 +36,4 @@
   <span><%= link "Edit", to: Routes.task_path(@conn, :edit, @task) %></span>
 <% else %>
 <% end %>
-<span><%= link "Back", to: Routes.task_path(@conn, :index) %></span>
+

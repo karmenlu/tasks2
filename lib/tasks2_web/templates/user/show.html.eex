@@ -20,71 +20,85 @@
 
 <p>
   <strong>My Underlings:</strong>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Underling Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for u <- @user.underlings do %>
+  <%= if length(@user.underlings) != 0 do %>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= u.name %></td>
+          <th>Underling Name</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <%= for u <- @user.underlings do %>
+          <tr>
+            <td><%= u.name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    No underlings for this profile.
+  <% end %>
 </p>
 
 <p>
   <strong>Tasks Assigned to Me:</strong>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Task Title</th>
-        <th>Description</th>
-        <th>Options</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for task <- @user.tasksAssigned do %>
+  <%= if length(@user.tasksAssigned) != 0 do %>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= task.title %></td>
-          <td><%= task.description %></td>
-          <td><%= link("Edit", to: Routes.task_path(@conn, :edit, task), 
-                      class: "btn btn-info") %></td>
+          <th>Task Title</th>
+          <th>Description</th>
+          <th>Options</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <%= for task <- @user.tasksAssigned do %>
+          <tr>
+            <td><%= task.title %></td>
+            <td><%= task.description %></td>
+            <td><%= link("Edit", to: Routes.task_path(@conn, :edit, task), 
+                        class: "btn btn-info") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    No tasks assigned to this profile.
+  <% end %>
 </p>
 
 <p>
-  <strong>Task Report</strong>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Underling Name</th>
-        <th>Task Title</th>
-        <th>Task Description</th>
-        <th>Completed?</th>
-      </tr>
-    </thead>
-    <tbody>
-    <%= for u <- @user.underlings do %>
-      <%= for task <- u.tasksAssigned do %>
+  <strong>Task Report:</strong>
+  <%= if length(@user.underlings) != 0 do %>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= u.name %></td>
-          <td><%= task.title %></td>
-          <td><%= task.description %></td>
-          <td><%= task.completeHuh %></td>
+          <th>Underling Name</th>
+          <th>Task Title</th>
+          <th>Task Description</th>
+          <th>Completed?</th>
         </tr>
+      </thead>
+      <tbody>
+      <%= for u <- @user.underlings do %>
+        <%= for task <- u.tasksAssigned do %>
+          <tr>
+            <td><%= u.name %></td>
+            <td><%= task.title %></td>
+            <td><%= task.description %></td>
+            <td><%= task.completeHuh %></td>
+          </tr>
+        <% end %>
       <% end %>
-    <% end %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  <% else %>
+    No underlings to report about for this profile.
+  <% end %>
 </p>
 
-
-<!--<span><= link "Back", to: Routes.user_path(@conn, :index) %></span>-->
-<span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>
+<span>
+  <%= if @current_user != nil && @current_user == @user do %>
+    <%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %>
+  <% end %>
+</span>

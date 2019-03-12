@@ -2,8 +2,7 @@
   <div class="col-12">
     <h1>Welcome to Task Tracker</h1>
     <span>
-      <%= if @current_user do%>
-      <% else %>
+      <%= if @current_user == nil do %>
         <%= link "Register", to: Routes.user_path(@conn, :new) %>
       <% end %>
     </span>
