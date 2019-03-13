@@ -6,7 +6,6 @@ defmodule Tasks2.Repo.Migrations.CreateTimeblocks do
       add :start, :integer
       add :end, :integer
       add :task_id, references(:tasks, on_delete: :delete_all)
-
       timestamps()
     end
 

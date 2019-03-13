@@ -13,8 +13,31 @@ import "phoenix_html";
 import jQuery from 'jquery';
 window.jQuery = window.$ = jQuery;
 import "bootstrap";
+import _ from "lodash";
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+$(function () {
+    function update_timeblocks(task_id) {
+        $.ajax(`${timeblock_path}?task_id=${task_id}`, {
+            method: "get",
+            dataType: "json",
+            contentType: "application/json; charset=UTF_8",
+            data: "",
+            success: (resp) => {
+                $("#timeblocks").empty();
+                $.each(resp.data, function(i, item) {
+                    var row = $('<tr>').append(
+                        $('<td>').text(item.start),
+                        $('<td>').text(item.end))
+                        .data("id", item.id);
+                    $("#timeblocks").append(row);
+                });
+            }
+        });
+        //TODO: complete ajax function for updating timeblocks
+    }
+});

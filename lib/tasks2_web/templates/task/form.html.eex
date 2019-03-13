@@ -25,10 +25,33 @@
     </div>
 
     <div class="form-group">
-      <%= label f, :timeSpent %>
-      <%= number_input f, :timeSpent, step: 15, min: 0 %>
-      <%= error_tag f, :timeSpent %>
+      <%= label f, :timeblocks %>
+      <div class="row">
+        <div class="col">
+          <label for="starttimeInput">Start time</label>
+          <input id="starttime-date" type="date"/>
+          <input id="starttime-time" type="time"/>  
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="endtimeInput">End time</label>
+          <input id="endtime-date" type="date"/>
+          <input id="endtime-time" type="time"/>  
+        </div>
+      </div>
+      <button type= "button" class="btn btn-secondary">Create a timeblock</button>
     </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <button id="startButton" type="button" class="btn btn-secondary">Start working</button>
+          <button id="endButton" type="button" class="btn btn-secondary">Stop working</button>
+        </div>
+      </div>
+    </div>
+    <!--TODO: hookup this form-->
   <% end %>
 
   <div class="form-group">

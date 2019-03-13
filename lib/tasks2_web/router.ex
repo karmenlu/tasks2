@@ -14,6 +14,14 @@ defmodule Tasks2Web.Router do
     plug :accepts, ["json"]
   end
 
+  #TODO: AJAX here? or API?
+  pipeline :ajax do
+    plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug Tasks2Web.Plugs.FetchSession
+  end
+
   scope "/", Tasks2Web do
     pipe_through :browser
 
@@ -24,8 +32,12 @@ defmodule Tasks2Web.Router do
   end
 
   # Other scopes may use custom stacks.
-  scope "/api/v1", Tasks2Web do
-    pipe_through :api
+  #scope "/api/v1", Tasks2Web do
+  #  pipe_through :api
+  #  resources "/timeblocks", TimeblockController, except: [:new, :edit]
+  # end
+  scope "/ajax", Tasks2Web do
+    pipe_through :ajax
     resources "/timeblocks", TimeblockController, except: [:new, :edit]
   end
 end
