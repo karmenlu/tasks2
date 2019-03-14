@@ -24,35 +24,44 @@
       <%= error_tag f, :completeHuh %>
     </div>
 
-    <div class="form-group">
-      <%= label f, :timeblocks %>
-      <div class="row">
-        <div class="col">
-          <label for="starttimeInput">Start time</label>
-          <input id="starttime-date" type="date"/>
-          <input id="starttime-time" type="time"/>  
+    <%= if assigns[:task] do %>
+      <div class="form-group">
+        <%= label f, :timeblocks %>
+        <div class="row">
+          <div class="col">
+            <label for="starttimeInput">Start time</label>
+            <input id="starttime-date" type="date"/>
+            <input id="starttime-time" type="time"/>  
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="endtimeInput">End time</label>
-          <input id="endtime-date" type="date"/>
-          <input id="endtime-time" type="time"/>  
+        <div class="row">
+          <div class="col">
+            <label for="endtimeInput">End time</label>
+            <input id="endtime-date" type="date"/>
+            <input id="endtime-time" type="time"/>  
+          </div>
         </div>
+        <button id="createBlockButton" type= "button" class="btn btn-secondary" data-task-id="<%= @task.id %>">Create a timeblock</button>
       </div>
-      <button id="createBlockButton" type= "button" class="btn btn-secondary">Create a timeblock</button>
-    </div>
 
-    <div class="form-group">
-      <div class="row">
-        <div class="col">
-          <button id="startButton" type="button" class="btn btn-secondary">Start working</button>
-          <button id="endButton" type="button" class="btn btn-secondary">Stop working</button>
+      <div class="form-group">
+        <div class="row">
+          <div class="col">
+            <button id="startButton" type="button" class="btn btn-secondary">Start working</button>
+            <button id="endButton" type="button" class="btn btn-secondary">Stop working</button>
+          </div>
         </div>
       </div>
-    </div>
-    <!--TODO: hookup this form-->
+    <% end %>
   <% end %>
+
+<script>
+ window.timeblock_path = "<%= Routes.timeblock_path(@conn, :create) %>";
+</script>
+
+  <table id="timeblocksTable">
+
+  </table>
 
   <div class="form-group">
     <%= label f, :doer_id %>

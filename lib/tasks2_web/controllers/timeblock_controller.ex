@@ -12,7 +12,12 @@ defmodule Tasks2Web.TimeblockController do
   end
 
   def create(conn, %{"timeblock" => timeblock_params}) do
-    with {:ok, %Timeblock{} = timeblock} <- Timeblocks.create_timeblock(timeblock_params) do
+    {_, start_dt} = NaiveDateTime.from_iso8601(Map.get(timeblock_params, "start", nil))
+    timeblock_params = Map.put(timeblock_params, "start", start_dt)
+    {_, end_dt} = NaiveDateTime.from_iso8601(Map.get(timeblock_params, "end", nil))
+    timeblock_params = Map.put(timeblock_params, "end", end_dt)
+    res = Timeblocks.create_timeblock(timeblock_params)
+    with {:ok, %Timeblock{} = timeblock} <- res do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.timeblock_path(conn, :show, timeblock))

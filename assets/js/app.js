@@ -28,13 +28,13 @@ $(function () {
             contentType: "application/json; charset=UTF_8",
             data: "",
             success: (resp) => {
-                $("#timeblocks").empty();
+                $("#timeblocksTable").empty();
                 $.each(resp.data, function(i, item) {
                     var row = $('<tr>').append(
                         $('<td>').text(item.start),
                         $('<td>').text(item.end))
                         .data("id", item.id);
-                    $("#timeblocks").append(row);
+                    $("#timeblocksTable").append(row);
                 });
             }
         });
@@ -42,22 +42,22 @@ $(function () {
 
     // create-timeblock-button
     $('#createBlockButton').click((ev) => {
-        let startDate= $('#starttime-date')[0].valueAsNumber;
-        let startTime = $('#starttime-time')[0].valueAsNumber;
-        let endDate = $('#endtime-date')[0].valueAsNumber;
-        let endTime = $('#endtime-time')[0].valueAsNumber;
+        let startDate= $('#starttime-date').val();
+        let startTime = $('#starttime-time').val(); 
+        let endDate = $('#endtime-date').val();
+        let endTime = $('#endtime-time').val(); 
         let task_id = $(ev.target).data('task-id');
 
         let text = JSON.stringify({
             timeblock: {
-                start: startDate + startTime,
-                end: endDate + endTime,
-                task: task_id,
+                start: startDate + "T" + startTime + ":00",
+                end: endDate + "T" + endTime + ":00",
+                task_id: task_id,
 
             },
         });
 
-        $.ajax(timeblock, {
+        $.ajax(timeblock_path, {
             method: "post",
             dataType: "json",
             contentType: "application/json; charset=UTF-8",
@@ -72,5 +72,27 @@ $(function () {
 
 
     //start button
+    $('#startButton').click((ev) => {
+        let task_id = $(ev.target).data('task-id');
+
+        let text = JSON.stringify({
+            timeblock: {
+                start: new Date().toISOString().split('.')[0],
+                end: null,
+                task_id: task_id,
+
+            },
+        });
+
+        $.ajax(timeblock_path, {
+            method: "post",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: text,
+            success: (resp) => {
+                update_timeblocks(task_id);
+            },
+        });
+    });
     //end button
 });
