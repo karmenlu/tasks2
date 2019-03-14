@@ -40,7 +40,7 @@
           <input id="endtime-time" type="time"/>  
         </div>
       </div>
-      <button type= "button" class="btn btn-secondary">Create a timeblock</button>
+      <button id="createBlockButton" type= "button" class="btn btn-secondary">Create a timeblock</button>
     </div>
 
     <div class="form-group">

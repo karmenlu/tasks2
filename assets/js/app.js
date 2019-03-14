@@ -38,6 +38,39 @@ $(function () {
                 });
             }
         });
-        //TODO: complete ajax function for updating timeblocks
     }
+
+    // create-timeblock-button
+    $('#createBlockButton').click((ev) => {
+        let startDate= $('#starttime-date')[0].valueAsNumber;
+        let startTime = $('#starttime-time')[0].valueAsNumber;
+        let endDate = $('#endtime-date')[0].valueAsNumber;
+        let endTime = $('#endtime-time')[0].valueAsNumber;
+        let task_id = $(ev.target).data('task-id');
+
+        let text = JSON.stringify({
+            timeblock: {
+                start: startDate + startTime,
+                end: endDate + endTime,
+                task: task_id,
+
+            },
+        });
+
+        $.ajax(timeblock, {
+            method: "post",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: text,
+            success: (resp) => {
+                update_timeblocks(task_id);
+            },
+        });
+    });
+
+
+
+
+    //start button
+    //end button
 });

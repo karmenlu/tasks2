@@ -6,7 +6,7 @@ defmodule Tasks2.Timeblocks.Timeblock do
   schema "timeblocks" do
     field :end, :integer
     field :start, :integer
-    belongs_to :task_id, Tasks2.Tasks.Task
+    belongs_to :task, Tasks2.Tasks.Task
 
     timestamps()
   end
