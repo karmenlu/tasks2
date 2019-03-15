@@ -11,6 +11,13 @@ defmodule Tasks2Web.TimeblockController do
     render(conn, "index.json", timeblocks: timeblocks)
   end
 
+  def create(conn, %{"timeblock" => timeblock_params, "set_midblock" => val}) do
+    task_id = Map.get(timeblock_params, "task_id")
+    task = Tasks2.Tasks.get_task!(task_id)
+    Tasks2.Tasks.update_task(task, %{:midblockHuh => true})
+    create(conn, %{"timeblock" => timeblock_params})
+  end
+
   def create(conn, %{"timeblock" => timeblock_params}) do
     {_, start_dt} = NaiveDateTime.from_iso8601(Map.get(timeblock_params, "start", nil))
     timeblock_params = Map.put(timeblock_params, "start", start_dt)
@@ -28,6 +35,13 @@ defmodule Tasks2Web.TimeblockController do
   def show(conn, %{"id" => id}) do
     timeblock = Timeblocks.get_timeblock!(id)
     render(conn, "show.json", timeblock: timeblock)
+  end
+
+  def update(conn, %{"id" => id, "timeblock" => timeblock_params, "set_midblock" => val}) do
+    timeblock = Timeblocks.get_timeblock!(id)
+    task = Tasks2.Tasks.get_task!(timeblock.task_id)
+    Tasks2.Tasks.update_task(task, %{:midblockHuh => false})
+    update(conn, %{"id" => id, "timeblock" => timeblock_params})
   end
 
   def update(conn, %{"id" => id, "timeblock" => timeblock_params}) do

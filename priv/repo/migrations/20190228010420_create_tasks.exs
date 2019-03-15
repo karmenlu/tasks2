@@ -7,6 +7,7 @@ defmodule Tasks2.Repo.Migrations.CreateTasks do
       add :description, :string
       add :completeHuh, :boolean, default: false, null: false
       add :timeSpent, :integer, default: 0, null: false
+      add :midblockHuh, :boolean, default: false, null: false
       add :doer_id, references(:users, on_delete: :nothing)
 
       timestamps()

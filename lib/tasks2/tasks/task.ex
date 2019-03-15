@@ -8,6 +8,7 @@ defmodule Tasks2.Tasks.Task do
     field :description, :string
     field :timeSpent, :integer, default: 0
     field :title, :string
+    field :midblockHuh, :boolean, default: false
     belongs_to :doer, Tasks2.Users.User
     has_many :timeblocks, Tasks2.Timeblocks.Timeblock
     timestamps()
@@ -16,7 +17,7 @@ defmodule Tasks2.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :completeHuh, :timeSpent, :doer_id])
-    |> validate_required([:title, :description, :completeHuh, :timeSpent])
+    |> cast(attrs, [:title, :description, :completeHuh, :timeSpent, :midblockHuh,  :doer_id])
+    |> validate_required([:title, :description, :completeHuh, :timeSpent, :midblockHuh])
   end
 end

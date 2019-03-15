@@ -46,9 +46,25 @@
 
       <div class="form-group">
         <div class="row">
+          <div class = "col">
+            <%= if @task.midblockHuh do %>
+              <p id="timeblock-status">Started tracking at <%= List.last(@task.timeblocks).start %></p>
+              <script>
+               window.timeblock_started = true;
+               window.timeblock_last_id = <%= List.last(@task.timeblocks).id %>;
+              </script>
+            <% else %>
+              <p id="timeblock-status">No time block started.</p>
+              <script>
+               window.timeblock_started = false;
+              </script>
+            <% end %>
+          </div>
+        </div>
+        <div class="row">
           <div class="col">
-            <button id="startButton" type="button" class="btn btn-secondary">Start working</button>
-            <button id="endButton" type="button" class="btn btn-secondary">Stop working</button>
+            <button id="startButton" type="button" class="btn btn-secondary" data-task-id="<%= @task.id %>">Start working</button>
+            <button id="endButton" type="button" class="btn btn-secondary" data-task-id="<%= @task.id %>">Stop working</button>
           </div>
         </div>
       </div>
@@ -57,11 +73,25 @@
 
 <script>
  window.timeblock_path = "<%= Routes.timeblock_path(@conn, :create) %>";
+<%= if assigns[:task] do %>
+     window.timeblock_task_id = <%= @task.id %>;
+ <% end %>
 </script>
 
-  <table id="timeblocksTable">
-
-  </table>
+  <%= if assigns[:task] do %>
+    <table id="timeblocksTable" class="table table-striped"> 
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>loading...</td><td>loading...</td><td></td></tr>
+      </tbody>
+     </table>
+  <% end %>
 
   <div class="form-group">
     <%= label f, :doer_id %>

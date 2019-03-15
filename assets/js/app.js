@@ -21,6 +21,28 @@ import _ from "lodash";
 // import socket from "./socket"
 
 $(function () {
+    function create_action_td(task_id, tb_id) {
+        return $('<td>').append(
+            $('<button>')
+                .addClass("btn").addClass("btn-danger")
+                .attr("type", "button")
+                .text("Delete").data("task_id", task_id).data("id", tb_id)
+                .click(delete_action)
+        );
+    }
+
+    function delete_action(ev) {
+        var tb_id = $(ev.target).data("id");
+        var task_id = $(ev.target).data("task_id");
+        $.ajax(timeblock_path + "/" + tb_id, {
+            method: "delete",
+            dataType: "json",
+            success: (resp) => {
+                update_timeblocks(task_id);
+            }
+        });
+    }
+
     function update_timeblocks(task_id) {
         $.ajax(`${timeblock_path}?task_id=${task_id}`, {
             method: "get",
@@ -28,16 +50,21 @@ $(function () {
             contentType: "application/json; charset=UTF_8",
             data: "",
             success: (resp) => {
-                $("#timeblocksTable").empty();
+                $("#timeblocksTable tbody").empty();
                 $.each(resp.data, function(i, item) {
                     var row = $('<tr>').append(
-                        $('<td>').text(item.start),
-                        $('<td>').text(item.end))
+                        $('<td>').text(item.start.replace("T", " ")),
+                        $('<td>').text(item.end.replace("T", " ")),
+                        create_action_td(task_id, item.id))
                         .data("id", item.id);
-                    $("#timeblocksTable").append(row);
+                    $("#timeblocksTable tbody").append(row);
                 });
             }
         });
+    }
+
+    if (window.timeblock_task_id) {
+        update_timeblocks(window.timeblock_task_id);
     }
 
     // create-timeblock-button
@@ -73,17 +100,20 @@ $(function () {
 
     //start button
     $('#startButton').click((ev) => {
+        if (window.timeblock_started) {
+            return;
+        }
         let task_id = $(ev.target).data('task-id');
-
+        let now = new Date().toISOString().split('.')[0];
         let text = JSON.stringify({
             timeblock: {
-                start: new Date().toISOString().split('.')[0],
-                end: null,
-                task_id: task_id,
-
+                start: now,
+                end: now,
+                task_id: task_id
             },
+            set_midblock: true
         });
-
+        console.log(text);
         $.ajax(timeblock_path, {
             method: "post",
             dataType: "json",
@@ -91,8 +121,39 @@ $(function () {
             data: text,
             success: (resp) => {
                 update_timeblocks(task_id);
+                window.timeblock_started = true;
+                window.timeblock_last_id = resp.data.id;
+                $("#timeblock-status").text("Started tracking at " + now);
             },
         });
+    });
+
+    $("#endButton").click((ev) => {
+        if (!window.timeblock_started) {
+            return;
+        }
+        let task_id = $(ev.target).data('task-id');
+        let now = new Date().toISOString().split('.')[0];
+        let tb_id = window.timeblock_last_id;
+        let text = JSON.stringify({
+            timeblock: {
+                end: now,
+            },
+            set_midblock: true
+        });
+        console.log(text);
+        $.ajax(timeblock_path + "/" + tb_id, {
+            method: "patch",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: text,
+            success: (resp) => {
+                update_timeblocks(task_id);
+                window.timeblock_started = false;
+                $("#timeblock-status").text("No time block started.");
+            },
+        });
+
     });
     //end button
 });

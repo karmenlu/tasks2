@@ -15,6 +15,11 @@ defmodule Tasks2Web.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    user_params = if Map.get(user_params, "manager_id") == "0" do
+      Map.put(user_params, "manager_id", nil)
+    else
+      user_params
+    end
     case Users.create_user(user_params) do
       {:ok, user} ->
         conn
@@ -39,6 +44,12 @@ defmodule Tasks2Web.UserController do
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
+    user_params = if Map.get(user_params, "manager_id") == "0" do
+      Map.put(user_params, "manager_id", nil)
+    else
+      user_params
+    end
+
     user = Users.get_user!(id)
 
     case Users.update_user(user, user_params) do
